@@ -57,6 +57,7 @@ const startCrawling = async () => {
             // Save data object
             await dataObject.save()
 
+            // Sleep for 1 second
             await sleep(1)
         }
     } catch (error) {
@@ -66,7 +67,7 @@ const startCrawling = async () => {
     console.log('END')
 }
 
-cron.schedule('* 0 * * *', () => {
+cron.schedule('0 0 * * *', () => {
     console.log('running at 12 a.m every day.')
     startCrawling()
 })
