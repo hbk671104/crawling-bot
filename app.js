@@ -34,7 +34,13 @@ const startCrawling = async () => {
 
         for (const p of projects) {
             const { id } = p.toJSON()
-            let { community_data, developer_data } = await queryProject(id)
+            let {
+                symbol,
+                name,
+                market_cap_rank,
+                community_data,
+                developer_data,
+            } = await queryProject(id)
 
             // Flatten the object
             community_data = flatten(community_data, {
@@ -49,6 +55,9 @@ const startCrawling = async () => {
             // Construct a new data object
             const dataObject = new AV.Object('Data')
             dataObject.set('project_id', id)
+            dataObject.set('symbol', symbol)
+            dataObject.set('name', name)
+            dataObject.set('market_cap_rank', market_cap_rank)
 
             // Set community data
             for (const key in community_data) {
