@@ -60,14 +60,10 @@ const startCrawling = async () => {
             dataObject.set('market_cap_rank', market_cap_rank)
 
             // Set community data
-            for (const key in community_data) {
-                dataObject.set(key, community_data[key])
-            }
+            dataObject.set(community_data)
 
             // Set developer data
-            for (const key in developer_data) {
-                dataObject.set(key, developer_data[key])
-            }
+            dataObject.set(developer_data)
 
             // Save data object
             await dataObject.save()
