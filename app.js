@@ -37,8 +37,14 @@ const startCrawling = async () => {
             let { community_data, developer_data } = await queryProject(id)
 
             // Flatten the object
-            community_data = flatten(community_data, { delimiter: '_' })
-            developer_data = flatten(developer_data, { delimiter: '_' })
+            community_data = flatten(community_data, {
+                delimiter: '_',
+                safe: true,
+            })
+            developer_data = flatten(developer_data, {
+                delimiter: '_',
+                safe: true,
+            })
 
             // Construct a new data object
             const dataObject = new AV.Object('Data')
