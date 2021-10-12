@@ -12,13 +12,39 @@ AV.init({
     serverURL: 'https://yfvy0m3n.lc-cn-n1-shared.com',
 })
 
-const queryProject = async (id) => {
+const saveProject = async (id) => {
     console.log(`${id}`)
     try {
-        const data = await got(
-            `https://api.coingecko.com/api/v3/coins/${id}?tickers=false&market_data=false&sparkline=false`
-        ).json()
-        return data
+        let { symbol, name, market_cap_rank, community_data, developer_data } =
+            await got(
+                `https://api.coingecko.com/api/v3/coins/${id}?tickers=false&market_data=false&sparkline=false`
+            ).json()
+
+        // Flatten the object
+        community_data = flatten(community_data, {
+            delimiter: '_',
+            safe: true,
+        })
+        developer_data = flatten(developer_data, {
+            delimiter: '_',
+            safe: true,
+        })
+
+        // Construct a new data object
+        const dataObject = new AV.Object('Data')
+        dataObject.set('project_id', id)
+        dataObject.set('symbol', symbol.toUpperCase())
+        dataObject.set('name', name)
+        dataObject.set('market_cap_rank', market_cap_rank)
+
+        // Set community data
+        dataObject.set(community_data)
+
+        // Set developer data
+        dataObject.set(developer_data)
+
+        // Save data object
+        return await dataObject.save()
     } catch (error) {
         console.error(error)
     }
@@ -34,39 +60,9 @@ const startCrawling = async () => {
 
         for (const p of projects) {
             const { id } = p.toJSON()
-            let {
-                symbol,
-                name,
-                market_cap_rank,
-                community_data,
-                developer_data,
-            } = await queryProject(id)
 
-            // Flatten the object
-            community_data = flatten(community_data, {
-                delimiter: '_',
-                safe: true,
-            })
-            developer_data = flatten(developer_data, {
-                delimiter: '_',
-                safe: true,
-            })
-
-            // Construct a new data object
-            const dataObject = new AV.Object('Data')
-            dataObject.set('project_id', id)
-            dataObject.set('symbol', symbol.toUpperCase())
-            dataObject.set('name', name)
-            dataObject.set('market_cap_rank', market_cap_rank)
-
-            // Set community data
-            dataObject.set(community_data)
-
-            // Set developer data
-            dataObject.set(developer_data)
-
-            // Save data object
-            await dataObject.save()
+            // Save a new project
+            await saveProject(id)
 
             // Sleep for 1 second
             await sleep(1)
@@ -83,4 +79,4 @@ cron.schedule('0 0 * * *', () => {
     startCrawling()
 })
 
-module.exports = { startCrawling }
+module.exports = { startCrawling, saveProject }
