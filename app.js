@@ -82,3 +82,5 @@ cron.schedule('0 0 * * *', () => {
     console.log('running at 12 a.m every day.')
     startCrawling()
 })
+
+module.exports = { startCrawling }

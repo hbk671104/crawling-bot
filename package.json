@@ -1,8 +1,15 @@
 {
-  "dependencies": {
-    "flat": "^5.0.2",
-    "got": "^11.8.2",
-    "leancloud-storage": "^4.12.0",
-    "node-cron": "^3.0.0"
-  }
+    "scripts": {
+        "start": "node app.js",
+        "test": "nodemon test.js"
+    },
+    "dependencies": {
+        "flat": "^5.0.2",
+        "got": "^11.8.2",
+        "leancloud-storage": "^4.12.0",
+        "node-cron": "^3.0.0"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.13"
+    }
 }
