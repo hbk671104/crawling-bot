@@ -55,7 +55,7 @@ const startCrawling = async () => {
             // Construct a new data object
             const dataObject = new AV.Object('Data')
             dataObject.set('project_id', id)
-            dataObject.set('symbol', symbol)
+            dataObject.set('symbol', symbol.toUpperCase())
             dataObject.set('name', name)
             dataObject.set('market_cap_rank', market_cap_rank)
 
