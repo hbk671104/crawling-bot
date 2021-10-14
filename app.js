@@ -74,9 +74,16 @@ const startCrawling = async () => {
     console.log('END')
 }
 
-cron.schedule('0 0 * * *', () => {
-    console.log('running at 12 a.m every day.')
-    startCrawling()
-})
+cron.schedule(
+    '0 8 * * *',
+    () => {
+        startCrawling()
+    },
+    {
+        timezone: 'Asia/Shanghai',
+    }
+)
+
+console.log('Crawler is running...')
 
 module.exports = { startCrawling, saveProject }
