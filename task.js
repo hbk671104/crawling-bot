@@ -48,6 +48,21 @@ const getProjectDetail = async (id) => {
     }
 }
 
+const getProjectCodeFrequency = async (github_url) => {
+    try {
+        const { pathname } = new URL(github_url)
+        if (pathname.split('/').length !== 3) {
+            return Promise.reject(`invalid pathname: ${github_url}`)
+        }
+        const result = await got(
+            `https://api.github.com/repos${pathname}/stats/code_frequency`
+        ).json()
+        return Promise.resolve(result)
+    } catch (error) {
+        return Promise.reject(error)
+    }
+}
+
 const AV = require('leancloud-storage')
 const flatten = require('flat')
 
@@ -60,7 +75,6 @@ AV.init({
 const saveProject = async ({
     id,
     symbol,
-    name,
     market_cap_rank,
     links,
     community_data,
@@ -84,7 +98,6 @@ const saveProject = async ({
         const dataObject = new AV.Object('Data')
         dataObject.set('project_id', id)
         dataObject.set('symbol', symbol.toUpperCase())
-        dataObject.set('name', name)
         dataObject.set('market_cap_rank', market_cap_rank)
         dataObject.set(community_data)
         dataObject.set(developer_data)
@@ -97,8 +110,24 @@ const saveProject = async ({
     }
 }
 
+const saveDevData = async ({ id, symbol, code_frequency }) => {
+    try {
+        const dataObject = new AV.Object('Dev_Data')
+        dataObject.set('project_id', id)
+        dataObject.set('symbol', symbol.toUpperCase())
+        dataObject.set('code_frequency', code_frequency)
+
+        const result = await dataObject.save()
+        return Promise.resolve(result)
+    } catch (error) {
+        return Promise.reject(error)
+    }
+}
+
 module.exports = {
     getProjectIDs,
     getProjectDetail,
+    getProjectCodeFrequency,
     saveProject,
+    saveDevData,
 }
