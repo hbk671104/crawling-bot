@@ -56,4 +56,4 @@ cron.schedule(
 
 console.log('Crawler is running...')
 
-module.exports = { startCrawling, saveProject }
+module.exports = { startCrawling }
