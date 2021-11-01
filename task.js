@@ -76,7 +76,7 @@ const saveProject = async ({
     id,
     symbol,
     market_cap_rank,
-    links,
+    links: { repos_url },
     community_data,
     developer_data,
 }) => {
@@ -90,10 +90,6 @@ const saveProject = async ({
             delimiter: '_',
             safe: true,
         })
-        repos_url = flatten(links.repos_url, {
-            delimiter: '_',
-            safe: true,
-        })
 
         const dataObject = new AV.Object('Data')
         dataObject.set('project_id', id)
@@ -101,7 +97,7 @@ const saveProject = async ({
         dataObject.set('market_cap_rank', market_cap_rank)
         dataObject.set(community_data)
         dataObject.set(developer_data)
-        dataObject.set(repos_url)
+        dataObject.set('github_url', repos_url.github_url)
 
         const result = await dataObject.save()
         return Promise.resolve(result)

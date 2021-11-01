@@ -45,7 +45,7 @@ const startCrawling = async () => {
 }
 
 cron.schedule(
-    '0 8 * * *',
+    '0 2 * * *',
     () => {
         startCrawling()
     },
@@ -56,4 +56,4 @@ cron.schedule(
 
 console.log('Crawler is running...')
 
-module.exports = { startCrawling, saveProject }
+module.exports = { startCrawling }
