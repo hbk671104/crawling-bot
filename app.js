@@ -45,7 +45,7 @@ const startCrawling = async () => {
 }
 
 cron.schedule(
-    '0 8 * * *',
+    '0 2 * * *',
     () => {
         startCrawling()
     },
