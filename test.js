@@ -9,6 +9,7 @@ const {
     saveProject,
     saveDevData,
 } = require('./task')
+const { startCrawling } = require('./app')
 
 if (argv.startAll) {
     console.log('test crawl all...')
