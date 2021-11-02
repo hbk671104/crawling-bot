@@ -14,7 +14,7 @@ const startCrawling = async () => {
     try {
         const ids = await getProjectIDs()
         for (const id of ids) {
-            console.log(`crawling ${id}...`)
+            console.log(`${id}...`)
             try {
                 const detail = await getProjectDetail(id)
                 await saveProject(detail)
