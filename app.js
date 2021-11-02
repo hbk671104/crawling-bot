@@ -6,6 +6,7 @@ const {
     saveProject,
     saveDevData,
 } = require('./task')
+const { sleep } = require('./util')
 
 const startCrawling = async () => {
     console.log('crawling begins...')
@@ -13,9 +14,11 @@ const startCrawling = async () => {
     try {
         const ids = await getProjectIDs()
         for (const id of ids) {
+            console.log(`crawling ${id}...`)
             try {
                 const detail = await getProjectDetail(id)
                 await saveProject(detail)
+                console.log(`${id} saved.`)
 
                 // request and save github repo code frequency
                 // const {
@@ -32,7 +35,7 @@ const startCrawling = async () => {
                 //     await saveDevData({ id, symbol, codeFrequency })
                 // }
 
-                // await sleep(1)
+                await sleep(1)
             } catch (error) {
                 console.error(error)
             }
