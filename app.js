@@ -32,7 +32,7 @@ const startCrawling = async () => {
                 //     await saveDevData({ id, symbol, codeFrequency })
                 // }
 
-                await sleep(1)
+                // await sleep(1)
             } catch (error) {
                 console.error(error)
             }
