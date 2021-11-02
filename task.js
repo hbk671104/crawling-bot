@@ -97,7 +97,7 @@ const saveProject = async ({
         dataObject.set('market_cap_rank', market_cap_rank)
         dataObject.set(community_data)
         dataObject.set(developer_data)
-        dataObject.set('github_url', repos_url.github_url)
+        dataObject.set('github_url', repos_url.github)
 
         const result = await dataObject.save()
         return Promise.resolve(result)

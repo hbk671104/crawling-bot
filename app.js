@@ -8,7 +8,7 @@ const {
 } = require('./task')
 
 const startCrawling = async () => {
-    console.log('Crawling Begins...')
+    console.log('crawling begins...')
 
     try {
         const ids = await getProjectIDs()
@@ -41,7 +41,7 @@ const startCrawling = async () => {
         console.error(error)
     }
 
-    console.log('Crawling Completes.')
+    console.log('crawling completes.')
 }
 
 cron.schedule(
