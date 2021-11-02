@@ -74,9 +74,10 @@ AV.init({
 
 const saveProject = async ({
     id,
+    name,
     symbol,
     market_cap_rank,
-    links: { repos_url },
+    links: { repos_url, twitter_screen_name },
     community_data,
     developer_data,
 }) => {
@@ -93,11 +94,13 @@ const saveProject = async ({
 
         const dataObject = new AV.Object('Data')
         dataObject.set('project_id', id)
+        dataObject.set('name', name)
         dataObject.set('symbol', symbol.toUpperCase())
         dataObject.set('market_cap_rank', market_cap_rank)
         dataObject.set(community_data)
         dataObject.set(developer_data)
         dataObject.set('github_url', repos_url.github)
+        dataObject.set('twitter_screen_name', twitter_screen_name)
 
         const result = await dataObject.save()
         return Promise.resolve(result)
