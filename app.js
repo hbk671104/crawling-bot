@@ -2,7 +2,7 @@ const cron = require('node-cron')
 const {
     getProjectIDs,
     getProjectDetail,
-    getProjectCodeFrequency,
+    getRepoCodeFrequency,
     saveProject,
     saveDevData,
 } = require('./task')
@@ -25,7 +25,7 @@ const startCrawling = async () => {
                 // } = detail
                 // if (github && github.length > 0) {
                 //     const [main_github_repo_url] = github
-                //     const codeFrequency = await getProjectCodeFrequency(
+                //     const codeFrequency = await getRepoCodeFrequency(
                 //         main_github_repo_url
                 //     )
                 //     const { id, symbol } = detail

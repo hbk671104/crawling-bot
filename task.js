@@ -48,7 +48,36 @@ const getProjectDetail = async (id) => {
     }
 }
 
-const getProjectCodeFrequency = async (github_url) => {
+const getOrgCodeFrequency = async (organization) => {
+    try {
+        const repos = await getOrgRepos(organization)
+        for (const repo of repos) {
+            const codeFrequency = await getRepoCodeFrequency(
+                `https://github.com/${repo}`
+            )
+
+            // merge all repo frequency together
+
+            await sleep(1)
+        }
+    } catch (error) {
+        return Promise.reject(error)
+    }
+}
+
+const getOrgRepos = async (organization) => {
+    try {
+        let result = await got(
+            `https://api.github.com/orgs/${organization}/repos`
+        ).json()
+        result = result.map((item) => item.full_name)
+        return Promise.resolve(result)
+    } catch (error) {
+        return Promise.reject(error)
+    }
+}
+
+const getRepoCodeFrequency = async (github_url) => {
     try {
         const { pathname } = new URL(github_url)
         if (pathname.split('/').length !== 3) {
@@ -97,7 +126,7 @@ const saveProject = async ({
         dataObject.set('market_cap_rank', market_cap_rank)
         dataObject.set(community_data)
         dataObject.set(developer_data)
-        dataObject.set('github_url', repos_url.github_url)
+        dataObject.set('github_url', repos_url.github)
 
         const result = await dataObject.save()
         return Promise.resolve(result)
@@ -123,7 +152,7 @@ const saveDevData = async ({ id, symbol, code_frequency }) => {
 module.exports = {
     getProjectIDs,
     getProjectDetail,
-    getProjectCodeFrequency,
+    getRepoCodeFrequency,
     saveProject,
     saveDevData,
 }
