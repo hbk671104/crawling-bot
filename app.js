@@ -6,16 +6,19 @@ const {
     saveProject,
     saveDevData,
 } = require('./task')
+const { sleep } = require('./util')
 
 const startCrawling = async () => {
-    console.log('Crawling Begins...')
+    console.log('crawling begins...')
 
     try {
         const ids = await getProjectIDs()
         for (const id of ids) {
+            console.log(`${id}...`)
             try {
                 const detail = await getProjectDetail(id)
                 await saveProject(detail)
+                console.log(`${id} saved.`)
 
                 // request and save github repo code frequency
                 // const {
@@ -41,7 +44,7 @@ const startCrawling = async () => {
         console.error(error)
     }
 
-    console.log('Crawling Completes.')
+    console.log('crawling completes.')
 }
 
 cron.schedule(
