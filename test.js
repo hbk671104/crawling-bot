@@ -25,6 +25,8 @@ if (argv.id) {
                 const detail = await getProjectDetail(argv.id)
                 // request and save github repo code frequency
                 const {
+                    id,
+                    symbol,
                     links: {
                         repos_url: { github },
                     },
@@ -35,7 +37,6 @@ if (argv.id) {
                         main_github_repo_url
                     )
                     if (argv.save) {
-                        const { id, symbol } = detail
                         await saveDevData({ id, symbol, codeFrequency })
                         console.log(`saved.`)
                     }

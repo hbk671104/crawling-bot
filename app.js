@@ -22,6 +22,8 @@ const startCrawling = async () => {
 
                 // request and save github repo code frequency
                 // const {
+                //     id,
+                //     symbol,
                 //     links: {
                 //         repos_url: { github },
                 //     },
@@ -31,7 +33,6 @@ const startCrawling = async () => {
                 //     const codeFrequency = await getRepoCodeFrequency(
                 //         main_github_repo_url
                 //     )
-                //     const { id, symbol } = detail
                 //     await saveDevData({ id, symbol, codeFrequency })
                 // }
 

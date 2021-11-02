@@ -138,10 +138,11 @@ const saveProject = async ({
     }
 }
 
-const saveDevData = async ({ id, symbol, code_frequency }) => {
+const saveDevData = async ({ id, name, symbol, code_frequency }) => {
     try {
         const dataObject = new AV.Object('Dev_Data')
         dataObject.set('project_id', id)
+        dataObject.set('name', name)
         dataObject.set('symbol', symbol.toUpperCase())
         dataObject.set('code_frequency', code_frequency)
 
