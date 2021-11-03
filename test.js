@@ -9,16 +9,25 @@ const {
     saveProject,
     saveDevData,
 } = require('./task')
-const { getProject, getTrending } = require('./job')
+const {
+    collectProject,
+    collectTrending,
+    collectPublicTreasury,
+} = require('./job')
 
-if (argv.getProject) {
+if (argv.collectProject) {
     console.log('test get projects...')
-    getProject()
+    collectProject()
 }
 
-if (argv.getTrending) {
+if (argv.collectTrending) {
     console.log('test get trending...')
-    getTrending()
+    collectTrending()
+}
+
+if (argv.collectPublicTreasury) {
+    console.log('test get public treasury...')
+    collectPublicTreasury()
 }
 
 if (argv.id) {

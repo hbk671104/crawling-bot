@@ -1,5 +1,9 @@
 const cron = require('node-cron')
-const { getProject, getTrending } = require('./job')
+const {
+    collectProject,
+    collectTrending,
+    collectPublicTreasury,
+} = require('./job')
 
 cron.schedule(
     '0 2 * * *',
@@ -16,8 +20,9 @@ console.log('Crawler is running...')
 const startCrawling = () => {
     console.log('crawling begins...')
 
-    getProject()
-    getTrending()
+    collectProject()
+    collectTrending()
+    collectPublicTreasury()
 
     console.log('crawling completes.')
 }

@@ -115,6 +115,17 @@ const getTrendingToday = async () => {
     }
 }
 
+const getPublicTreasury = async (id = 'bitcoin') => {
+    try {
+        const result = await got(
+            `https://api.coingecko.com/api/v3/companies/public_treasury/${id}`
+        ).json()
+        return Promise.resolve(result)
+    } catch (error) {
+        return Promise.reject(error)
+    }
+}
+
 const AV = require('leancloud-storage')
 const flatten = require('flat')
 
@@ -191,12 +202,27 @@ const saveTrendingData = async ({ id, name, symbol, market_cap_rank }) => {
     }
 }
 
+const savePublicTreasuryData = async ({ id, data }) => {
+    try {
+        const dataObject = new AV.Object('Public_Treasury')
+        dataObject.set('project_id', id)
+        dataObject.set(data)
+
+        const result = await dataObject.save()
+        return Promise.resolve(result)
+    } catch (error) {
+        return Promise.reject(error)
+    }
+}
+
 module.exports = {
     getTopProjectIDs,
     getProjectDetail,
     getRepoCodeFrequency,
     getTrendingToday,
+    getPublicTreasury,
     saveProject,
     saveDevData,
     saveTrendingData,
+    savePublicTreasuryData,
 }
