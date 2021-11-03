@@ -12,7 +12,7 @@ const getAllProjectIDs = async () => {
     }
 }
 
-const getTopProjectIDs = async ({ per_page = 250, max_page = 4 } = {}) => {
+const getTopProjectIDs = async ({ per_page = 250, max_page = 6 } = {}) => {
     try {
         let list = []
         for (let i = 0; i < max_page; i++) {
@@ -105,12 +105,11 @@ const getRepoCodeFrequency = async (github_url) => {
 
 const getTrendingToday = async () => {
     try {
-        const result = await got(
+        let { coins } = await got(
             'https://api.coingecko.com/api/v3/search/trending'
-        )
-            .json()
-            .map((coin) => coin.item)
-        return Promise.resolve(result)
+        ).json()
+        coins = coins.map((coin) => coin.item)
+        return Promise.resolve(coins)
     } catch (error) {
         return Promise.reject(error)
     }
