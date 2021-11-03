@@ -1,52 +1,5 @@
 const cron = require('node-cron')
-const {
-    getProjectIDs,
-    getProjectDetail,
-    getRepoCodeFrequency,
-    saveProject,
-    saveDevData,
-} = require('./task')
-const { sleep } = require('./util')
-
-const startCrawling = async () => {
-    console.log('crawling begins...')
-
-    try {
-        const ids = await getProjectIDs()
-        for (const id of ids) {
-            console.log(`${id}...`)
-            try {
-                const detail = await getProjectDetail(id)
-                await saveProject(detail)
-                console.log(`${id} saved.`)
-
-                // request and save github repo code frequency
-                // const {
-                //     id,
-                //     symbol,
-                //     links: {
-                //         repos_url: { github },
-                //     },
-                // } = detail
-                // if (github && github.length > 0) {
-                //     const [main_github_repo_url] = github
-                //     const codeFrequency = await getRepoCodeFrequency(
-                //         main_github_repo_url
-                //     )
-                //     await saveDevData({ id, symbol, codeFrequency })
-                // }
-
-                await sleep(1)
-            } catch (error) {
-                console.error(error)
-            }
-        }
-    } catch (error) {
-        console.error(error)
-    }
-
-    console.log('crawling completes.')
-}
+const { getProject, getTrending } = require('./job')
 
 cron.schedule(
     '0 2 * * *',
@@ -60,4 +13,11 @@ cron.schedule(
 
 console.log('Crawler is running...')
 
-module.exports = { startCrawling }
+const startCrawling = () => {
+    console.log('crawling begins...')
+
+    getProject()
+    getTrending()
+
+    console.log('crawling completes.')
+}

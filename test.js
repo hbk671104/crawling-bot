@@ -3,17 +3,22 @@ const { hideBin } = require('yargs/helpers')
 const { argv } = yargs(hideBin(process.argv))
 
 const {
-    getProjectIDs,
+    getTopProjectIDs,
     getProjectDetail,
     getRepoCodeFrequency,
     saveProject,
     saveDevData,
 } = require('./task')
-const { startCrawling } = require('./app')
+const { getProject, getTrending } = require('./job')
 
-if (argv.startAll) {
-    console.log('test crawl all...')
-    startCrawling()
+if (argv.getProject) {
+    console.log('test get projects...')
+    getProject()
+}
+
+if (argv.getTrending) {
+    console.log('test get trending...')
+    getTrending()
 }
 
 if (argv.id) {
@@ -68,7 +73,7 @@ if (argv.getIDs) {
     console.log('test get project ids...')
     ;(async () => {
         try {
-            const ids = await getProjectIDs()
+            const ids = await getTopProjectIDs()
             console.log(ids.length)
         } catch (error) {
             console.error(error)

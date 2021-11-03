@@ -1,7 +1,18 @@
 const got = require('got')
 const { sleep } = require('./util')
 
-const getProjectIDs = async ({ per_page = 250, max_page = 4 } = {}) => {
+const getAllProjectIDs = async () => {
+    try {
+        const list = await got('https://api.coingecko.com/api/v3/coins/list')
+            .json()
+            .map((item) => item.id)
+        return Promise.resolve(list)
+    } catch (error) {
+        return Promise.reject(error)
+    }
+}
+
+const getTopProjectIDs = async ({ per_page = 250, max_page = 4 } = {}) => {
     try {
         let list = []
         for (let i = 0; i < max_page; i++) {
@@ -15,9 +26,9 @@ const getProjectIDs = async ({ per_page = 250, max_page = 4 } = {}) => {
                         page: i + 1,
                     },
                 }
-            ).json()
-
-            tempList = tempList.map((item) => item.id)
+            )
+                .json()
+                .map((item) => item.id)
             list = list.concat(tempList)
 
             await sleep(1)
@@ -92,6 +103,19 @@ const getRepoCodeFrequency = async (github_url) => {
     }
 }
 
+const getTrendingToday = async () => {
+    try {
+        const result = await got(
+            'https://api.coingecko.com/api/v3/search/trending'
+        )
+            .json()
+            .map((coin) => coin.item)
+        return Promise.resolve(result)
+    } catch (error) {
+        return Promise.reject(error)
+    }
+}
+
 const AV = require('leancloud-storage')
 const flatten = require('flat')
 
@@ -140,7 +164,7 @@ const saveProject = async ({
 
 const saveDevData = async ({ id, name, symbol, code_frequency }) => {
     try {
-        const dataObject = new AV.Object('Dev_Data')
+        const dataObject = new AV.Object('Development')
         dataObject.set('project_id', id)
         dataObject.set('name', name)
         dataObject.set('symbol', symbol.toUpperCase())
@@ -153,10 +177,27 @@ const saveDevData = async ({ id, name, symbol, code_frequency }) => {
     }
 }
 
+const saveTrendingData = async ({ id, name, symbol, market_cap_rank }) => {
+    try {
+        const dataObject = new AV.Object('Trending')
+        dataObject.set('project_id', id)
+        dataObject.set('name', name)
+        dataObject.set('symbol', symbol.toUpperCase())
+        dataObject.set('market_cap_rank', market_cap_rank)
+
+        const result = await dataObject.save()
+        return Promise.resolve(result)
+    } catch (error) {
+        return Promise.reject(error)
+    }
+}
+
 module.exports = {
-    getProjectIDs,
+    getTopProjectIDs,
     getProjectDetail,
     getRepoCodeFrequency,
+    getTrendingToday,
     saveProject,
     saveDevData,
+    saveTrendingData,
 }
