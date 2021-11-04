@@ -12,7 +12,7 @@ const getAllProjectIDs = async () => {
     }
 }
 
-const getTopProjectIDs = async ({ per_page = 250, max_page = 6 } = {}) => {
+const getTopProjectIDs = async ({ per_page = 250, max_page = 4 } = {}) => {
     try {
         let list = []
         for (let i = 0; i < max_page; i++) {
