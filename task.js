@@ -26,9 +26,8 @@ const getTopProjectIDs = async ({ per_page = 250, max_page = 6 } = {}) => {
                         page: i + 1,
                     },
                 }
-            )
-                .json()
-                .map((item) => item.id)
+            ).json()
+            tempList = tempList.map((item) => item.id)
             list = list.concat(tempList)
 
             await sleep(1)
