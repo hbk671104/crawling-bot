@@ -17,10 +17,10 @@ const collectProject = async () => {
         console.log('start getting top projects...')
         const ids = await getTopProjectIDs()
         let projectObjects = []
-        for await (const id of ids) {
+        for (const id of ids) {
             try {
                 console.log(`${id}...`)
-                const detail = getProjectDetail(id)
+                const detail = await getProjectDetail(id)
                 projectObjects.push(createProjectObject(detail))
 
                 await sleep(1)
