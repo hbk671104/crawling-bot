@@ -21,8 +21,6 @@ const collectProject = async () => {
                 const detail = await getProjectDetail(id)
                 await saveProject(detail)
                 console.log(`${id} saved.`)
-                await saveDevData(detail)
-                console.log(`${id} dev data saved.`)
 
                 await sleep(1)
             } catch (error) {
