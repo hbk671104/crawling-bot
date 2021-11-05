@@ -21,22 +21,8 @@ const collectProject = async () => {
                 const detail = await getProjectDetail(id)
                 await saveProject(detail)
                 console.log(`${id} saved.`)
-
-                // request and save github repo code frequency
-                // const {
-                //     id,
-                //     symbol,
-                //     links: {
-                //         repos_url: { github },
-                //     },
-                // } = detail
-                // if (github && github.length > 0) {
-                //     const [main_github_repo_url] = github
-                //     const codeFrequency = await getRepoCodeFrequency(
-                //         main_github_repo_url
-                //     )
-                //     await saveDevData({ id, symbol, codeFrequency })
-                // }
+                await saveDevData(detail)
+                console.log(`${id} dev data saved.`)
 
                 await sleep(1)
             } catch (error) {

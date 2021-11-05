@@ -171,13 +171,23 @@ const saveProject = async ({
     }
 }
 
-const saveDevData = async ({ id, name, symbol, code_frequency }) => {
+const saveDevData = async ({
+    id,
+    name,
+    symbol,
+    developer_data: {
+        code_additions_deletions_4_weeks: { additions, deletions },
+    },
+}) => {
     try {
         const dataObject = new AV.Object('Development')
         dataObject.set('project_id', id)
         dataObject.set('name', name)
         dataObject.set('symbol', symbol.toUpperCase())
-        dataObject.set('code_frequency', code_frequency)
+        dataObject.set(
+            'code_net_additions_per_week',
+            Math.round((additions + deletions) / 4)
+        )
 
         const result = await dataObject.save()
         return Promise.resolve(result)
