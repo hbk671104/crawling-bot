@@ -168,10 +168,12 @@ const saveProject = async ({
         const {
             code_additions_deletions_4_weeks: { additions, deletions },
         } = developer_data
-        dataObject.set(
-            'code_net_additions_per_week',
-            Math.round((additions + deletions) / 4)
-        )
+        if (additions && deletions) {
+            dataObject.set(
+                'code_net_additions_per_week',
+                Math.round((additions + deletions) / 4)
+            )
+        }
 
         const result = await dataObject.save()
         return Promise.resolve(result)
