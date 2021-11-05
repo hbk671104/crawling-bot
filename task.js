@@ -165,12 +165,11 @@ const saveProject = async ({
         dataObject.set('twitter_screen_name', twitter_screen_name)
 
         // code net additions per week
-        const { code_additions_deletions_4_weeks } = developer_data
-        if (
-            code_additions_deletions_4_weeks.additions &&
-            code_additions_deletions_4_weeks.deletions
-        ) {
-            const { additions, deletions } = code_additions_deletions_4_weeks
+        const {
+            code_additions_deletions_4_weeks_additions: additions,
+            code_additions_deletions_4_weeks_deletions: deletions,
+        } = developer_data
+        if (additions && deletions) {
             dataObject.set(
                 'code_net_additions_per_week',
                 Math.round((additions + deletions) / 4)
