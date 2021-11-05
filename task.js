@@ -142,7 +142,7 @@ const saveAllObjects = async (objects) => {
     }
 }
 
-const createProjectObject = async ({
+const createProjectObject = ({
     id,
     name,
     symbol,
