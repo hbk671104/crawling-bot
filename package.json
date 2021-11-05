@@ -8,7 +8,6 @@
         "got": "^11.8.2",
         "leancloud-storage": "^4.12.0",
         "node-cron": "^3.0.0",
-        "store": "^2.0.12",
         "yargs": "^17.2.1"
     },
     "devDependencies": {
