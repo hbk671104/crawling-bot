@@ -4,31 +4,32 @@ const {
     getRepoCodeFrequency,
     getTrendingToday,
     getPublicTreasury,
-    saveProject,
+    createProjectObject,
     saveDevData,
     saveTrendingData,
     savePublicTreasuryData,
+    saveAllObjects,
 } = require('./task')
 const { sleep } = require('./util')
 
 const collectProject = async () => {
     try {
-        console.log('getting top projects...')
+        console.log('start getting top projects...')
         const ids = await getTopProjectIDs()
-        console.log(`${ids.length} projects found.`)
-        for (const id of ids) {
+        let projectObjects = []
+        for await (const id of ids) {
             try {
                 console.log(`${id}...`)
-                const detail = await getProjectDetail(id)
-                await saveProject(detail)
-                console.log(`${id} saved.`)
+                const detail = getProjectDetail(id)
+                projectObjects.push(createProjectObject(detail))
 
                 await sleep(1)
             } catch (error) {
                 console.error(error)
             }
         }
-        console.log('getting top projects done.')
+        await saveAllObjects(projectObjects)
+        console.log('all project saved.')
     } catch (error) {
         console.error(error)
     }
