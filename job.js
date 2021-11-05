@@ -1,13 +1,11 @@
 const {
     getTopProjectIDs,
     getProjectDetail,
-    getRepoCodeFrequency,
     getTrendingToday,
     getPublicTreasury,
     createProjectObject,
-    saveDevData,
-    saveTrendingData,
-    savePublicTreasuryData,
+    createTrendingDataObject,
+    createPublicTreasuryDataObject,
     saveAllObjects,
 } = require('./task')
 const { sleep } = require('./util')
@@ -39,18 +37,10 @@ const collectTrending = async () => {
     try {
         console.log('getting trending today...')
         const items = await getTrendingToday()
-        for (const item of items) {
-            try {
-                console.log(`${item.id}...`)
-                await saveTrendingData(item)
-                console.log(`${item.id} saved.`)
-
-                await sleep(1)
-            } catch (error) {
-                console.error(error)
-            }
-        }
-        console.log('getting trending today done.')
+        await saveAllObjects(
+            items.map((item) => createTrendingDataObject(item))
+        )
+        console.log('all today trendings saved.')
     } catch (error) {
         console.error(error)
     }
@@ -59,10 +49,14 @@ const collectTrending = async () => {
 const collectPublicTreasury = async () => {
     try {
         console.log('getting public treasury...')
-        const bitcoin = await getPublicTreasury()
-        await savePublicTreasuryData({ id: 'bitcoin', data: bitcoin })
-        const ethereum = await getPublicTreasury('ethereum')
-        await savePublicTreasuryData({ id: 'ethereum', data: ethereum })
+        await createPublicTreasuryDataObject({
+            id: 'bitcoin',
+            data: await getPublicTreasury('bitcoin'),
+        }).save()
+        await createPublicTreasuryDataObject({
+            id: 'ethereum',
+            data: await getPublicTreasury('ethereum'),
+        }).save()
         console.log('getting public treasury done.')
     } catch (error) {
         console.error(error)

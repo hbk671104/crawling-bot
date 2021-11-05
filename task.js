@@ -114,7 +114,7 @@ const getTrendingToday = async () => {
     }
 }
 
-const getPublicTreasury = async (id = 'bitcoin') => {
+const getPublicTreasury = async (id) => {
     try {
         const result = await got(
             `https://api.coingecko.com/api/v3/companies/public_treasury/${id}`
@@ -184,47 +184,32 @@ const createProjectObject = ({
     return dataObject
 }
 
-const saveDevData = async ({ id, name, symbol, code_frequency }) => {
-    try {
-        const dataObject = new AV.Object('Development')
-        dataObject.set('project_id', id)
-        dataObject.set('name', name)
-        dataObject.set('symbol', symbol.toUpperCase())
-        dataObject.set('code_frequency', code_frequency)
+const createDevDataObject = ({ id, name, symbol, code_frequency }) => {
+    const dataObject = new AV.Object('Development')
+    dataObject.set('project_id', id)
+    dataObject.set('name', name)
+    dataObject.set('symbol', symbol.toUpperCase())
+    dataObject.set('code_frequency', code_frequency)
 
-        const result = await dataObject.save()
-        return Promise.resolve(result)
-    } catch (error) {
-        return Promise.reject(error)
-    }
+    return dataObject
 }
 
-const saveTrendingData = async ({ id, name, symbol, market_cap_rank }) => {
-    try {
-        const dataObject = new AV.Object('Trending')
-        dataObject.set('project_id', id)
-        dataObject.set('name', name)
-        dataObject.set('symbol', symbol.toUpperCase())
-        dataObject.set('market_cap_rank', market_cap_rank)
+const createTrendingDataObject = ({ id, name, symbol, market_cap_rank }) => {
+    const dataObject = new AV.Object('Trending')
+    dataObject.set('project_id', id)
+    dataObject.set('name', name)
+    dataObject.set('symbol', symbol.toUpperCase())
+    dataObject.set('market_cap_rank', market_cap_rank)
 
-        const result = await dataObject.save()
-        return Promise.resolve(result)
-    } catch (error) {
-        return Promise.reject(error)
-    }
+    return dataObject
 }
 
-const savePublicTreasuryData = async ({ id, data }) => {
-    try {
-        const dataObject = new AV.Object('Public_Treasury')
-        dataObject.set('project_id', id)
-        dataObject.set(data)
+const createPublicTreasuryDataObject = async ({ id, data }) => {
+    const dataObject = new AV.Object('Public_Treasury')
+    dataObject.set('project_id', id)
+    dataObject.set(data)
 
-        const result = await dataObject.save()
-        return Promise.resolve(result)
-    } catch (error) {
-        return Promise.reject(error)
-    }
+    return dataObject
 }
 
 module.exports = {
@@ -234,8 +219,8 @@ module.exports = {
     getTrendingToday,
     getPublicTreasury,
     createProjectObject,
-    saveDevData,
-    saveTrendingData,
-    savePublicTreasuryData,
+    createDevDataObject,
+    createTrendingDataObject,
+    createPublicTreasuryDataObject,
     saveAllObjects,
 }
