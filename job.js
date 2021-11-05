@@ -15,6 +15,7 @@ const collectProject = async () => {
     try {
         console.log('getting top projects...')
         const ids = await getTopProjectIDs()
+        console.log(`${ids.length} projects found.`)
         for (const id of ids) {
             try {
                 console.log(`${id}...`)
