@@ -134,7 +134,15 @@ AV.init({
     serverURL: 'https://yfvy0m3n.lc-cn-n1-shared.com',
 })
 
-const saveProject = async ({
+const saveAllObjects = async (objects) => {
+    try {
+        return Promise.resolve(await AV.Object.saveAll(objects))
+    } catch {
+        return Promise.reject(error)
+    }
+}
+
+const createProjectObject = async ({
     id,
     name,
     symbol,
@@ -143,41 +151,36 @@ const saveProject = async ({
     community_data,
     developer_data,
 }) => {
-    try {
-        // Flatten the object
-        community_data = flatten(community_data, {
-            delimiter: '_',
-            safe: true,
-        })
-        developer_data = flatten(developer_data, {
-            delimiter: '_',
-            safe: true,
-        })
+    // Flatten the object
+    community_data = flatten(community_data, {
+        delimiter: '_',
+        safe: true,
+    })
+    developer_data = flatten(developer_data, {
+        delimiter: '_',
+        safe: true,
+    })
 
-        const dataObject = new AV.Object('Data')
-        dataObject.set('project_id', id)
-        dataObject.set('name', name)
-        dataObject.set('symbol', symbol.toUpperCase())
-        dataObject.set('market_cap_rank', market_cap_rank)
-        dataObject.set(community_data)
-        dataObject.set(developer_data)
-        dataObject.set('github_url', repos_url.github)
-        dataObject.set('twitter_screen_name', twitter_screen_name)
+    const dataObject = new AV.Object('Data')
+    dataObject.set('project_id', id)
+    dataObject.set('name', name)
+    dataObject.set('symbol', symbol.toUpperCase())
+    dataObject.set('market_cap_rank', market_cap_rank)
+    dataObject.set(community_data)
+    dataObject.set(developer_data)
+    dataObject.set('github_url', repos_url.github)
+    dataObject.set('twitter_screen_name', twitter_screen_name)
 
-        // code net additions per week
-        const {
-            code_additions_deletions_4_weeks: { additions, deletions },
-        } = developer_data
-        dataObject.set(
-            'code_net_additions_per_week',
-            Math.round((additions + deletions) / 4)
-        )
+    // code net additions per week
+    const {
+        code_additions_deletions_4_weeks: { additions, deletions },
+    } = developer_data
+    dataObject.set(
+        'code_net_additions_per_week',
+        Math.round((additions + deletions) / 4)
+    )
 
-        const result = await dataObject.save()
-        return Promise.resolve(result)
-    } catch (error) {
-        return Promise.reject(error)
-    }
+    return dataObject
 }
 
 const saveDevData = async ({ id, name, symbol, code_frequency }) => {
@@ -229,8 +232,9 @@ module.exports = {
     getRepoCodeFrequency,
     getTrendingToday,
     getPublicTreasury,
-    saveProject,
+    createProjectObject,
     saveDevData,
     saveTrendingData,
     savePublicTreasuryData,
+    saveAllObjects,
 }
