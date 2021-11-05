@@ -173,7 +173,8 @@ const createProjectObject = ({
 
     // code net additions per week
     const {
-        code_additions_deletions_4_weeks: { additions, deletions },
+        code_additions_deletions_4_weeks_additions: additions,
+        code_additions_deletions_4_weeks_deletions: deletions,
     } = developer_data
     dataObject.set(
         'code_net_additions_per_week',
