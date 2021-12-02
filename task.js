@@ -75,11 +75,18 @@ const getRepoCodeFrequency = async (github_url) => {
         let { pathname } = new URL(github_url)
         const paths = pathname.split('/')
         if (paths.length === 2) {
+            return
             pathname = `/${await getTopOrgRepo(paths[1])}`
             await sleep(1)
         }
         const result = await got(
-            `https://api.github.com/repos${pathname}/stats/code_frequency`
+            `https://api.github.com/repos${pathname}/stats/code_frequency`,
+            {
+                headers: {
+                    Authorization:
+                        'token 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',
+                },
+            }
         ).json()
         return Promise.resolve(result)
     } catch (error) {
@@ -180,8 +187,10 @@ const createProjectObject = ({
         )
         dataObject.set(
             'code_net_additions_per_week_three_months',
-            code_frequency_three_months.reduce(reducer, 0) /
-                code_frequency_three_months.length
+            Math.round(
+                code_frequency_three_months.reduce(reducer, 0) /
+                    code_frequency_three_months.length
+            )
         )
 
         // code frequencies six months
@@ -190,8 +199,10 @@ const createProjectObject = ({
         )
         dataObject.set(
             'code_net_additions_per_week_six_months',
-            code_frequency_six_months.reduce(reducer, 0) /
-                code_frequency_six_months.length
+            Math.round(
+                code_frequency_six_months.reduce(reducer, 0) /
+                    code_frequency_six_months.length
+            )
         )
 
         // code frequencies one year
@@ -200,14 +211,18 @@ const createProjectObject = ({
         )
         dataObject.set(
             'code_net_additions_per_week_one_year',
-            code_frequency_one_year.reduce(reducer, 0) /
-                code_frequency_one_year.length
+            Math.round(
+                code_frequency_one_year.reduce(reducer, 0) /
+                    code_frequency_one_year.length
+            )
         )
 
         // code frequencies all
         dataObject.set(
             'code_net_additions_per_week_all',
-            code_frequency.reduce(reducer, 0) / code_frequency.length
+            Math.round(
+                code_frequency.reduce(reducer, 0) / code_frequency.length
+            )
         )
     }
 
