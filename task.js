@@ -76,7 +76,7 @@ const getRepoCodeFrequency = async (github_url) => {
         const paths = pathname.split('/')
         if (paths.length === 2) {
             pathname = `/${await getTopOrgRepo(paths[1])}`
-            // return Promise.reject(`invalid pathname: ${github_url}`)
+            await sleep(1)
         }
         const result = await got(
             `https://api.github.com/repos${pathname}/stats/code_frequency`
