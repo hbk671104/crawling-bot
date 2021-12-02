@@ -1,6 +1,7 @@
 const {
     getTopProjectIDs,
     getProjectDetail,
+    getRepoCodeFrequency,
     getTrendingToday,
     getPublicTreasury,
     createProjectObject,
