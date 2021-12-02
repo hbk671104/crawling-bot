@@ -24,7 +24,7 @@ const collectProject = async () => {
                     links: { repos_url },
                 } = detail
                 const code_frequency = await getRepoCodeFrequency(
-                    repos_url.github
+                    repos_url.github[0]
                 )
                 projectObjects.push(
                     createProjectObject({ ...detail, code_frequency })
