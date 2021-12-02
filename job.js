@@ -19,7 +19,15 @@ const collectProject = async () => {
             try {
                 console.log(`${id}...`)
                 const detail = await getProjectDetail(id)
-                projectObjects.push(createProjectObject(detail))
+                const {
+                    links: { repos_url },
+                } = detail
+                const code_frequency = await getRepoCodeFrequency(
+                    repos_url.github
+                )
+                projectObjects.push(
+                    createProjectObject({ ...detail, code_frequency })
+                )
 
                 await sleep(1)
             } catch (error) {

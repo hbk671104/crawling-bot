@@ -142,6 +142,8 @@ const saveAllObjects = async (objects) => {
     }
 }
 
+const dayjs = require('dayjs')
+
 const createProjectObject = ({
     id,
     name,
@@ -150,6 +152,7 @@ const createProjectObject = ({
     links: { repos_url, twitter_screen_name },
     community_data,
     developer_data,
+    code_frequency,
 }) => {
     // Flatten the object
     community_data = flatten(community_data, {
@@ -179,6 +182,45 @@ const createProjectObject = ({
     dataObject.set(
         'code_net_additions_per_week',
         Math.round((additions + deletions) / 4)
+    )
+
+    const reducer = (acc, [_, additions, deletions]) =>
+        acc + (additions + deletions)
+
+    // code frequencies three months
+    const code_frequency_three_months = code_frequency.filter(([timestamp]) =>
+        dayjs.unix(timestamp).isAfter(dayjs().subtract(3, 'month'))
+    )
+    dataObject.set(
+        'code_net_additions_per_week_three_months',
+        code_frequency_three_months.reduce(reducer, 0) /
+            code_frequency_three_months.length
+    )
+
+    // code frequencies six months
+    const code_frequency_six_months = code_frequency.filter(([timestamp]) =>
+        dayjs.unix(timestamp).isAfter(dayjs().subtract(6, 'month'))
+    )
+    dataObject.set(
+        'code_net_additions_per_week_six_months',
+        code_frequency_six_months.reduce(reducer, 0) /
+            code_frequency_six_months.length
+    )
+
+    // code frequencies one year
+    const code_frequency_one_year = code_frequency.filter(([timestamp]) =>
+        dayjs.unix(timestamp).isAfter(dayjs().subtract(1, 'year'))
+    )
+    dataObject.set(
+        'code_net_additions_per_week_one_year',
+        code_frequency_one_year.reduce(reducer, 0) /
+            code_frequency_one_year.length
+    )
+
+    // code frequencies all
+    dataObject.set(
+        'code_net_additions_per_week_all',
+        code_frequency.reduce(reducer, 0) / code_frequency.length
     )
 
     return dataObject
