@@ -58,30 +58,13 @@ const getProjectDetail = async (id) => {
     }
 }
 
-const getOrgCodeFrequency = async (organization) => {
-    try {
-        const repos = await getOrgRepos(organization)
-        for (const repo of repos) {
-            const codeFrequency = await getRepoCodeFrequency(
-                `https://github.com/${repo}`
-            )
-
-            // merge all repo frequency together
-
-            await sleep(1)
-        }
-    } catch (error) {
-        return Promise.reject(error)
-    }
-}
-
-const getOrgRepos = async (organization) => {
+const getTopOrgRepo = async (organization) => {
     try {
         let result = await got(
             `https://api.github.com/orgs/${organization}/repos`
         ).json()
-        result = result.map((item) => item.full_name)
-        return Promise.resolve(result)
+        result = result.sort((a, b) => a.stargazers_count > b.stargazers_count)
+        return Promise.resolve(result[0].full_name)
     } catch (error) {
         return Promise.reject(error)
     }
@@ -89,9 +72,11 @@ const getOrgRepos = async (organization) => {
 
 const getRepoCodeFrequency = async (github_url) => {
     try {
-        const { pathname } = new URL(github_url)
-        if (pathname.split('/').length !== 3) {
-            return Promise.reject(`invalid pathname: ${github_url}`)
+        let { pathname } = new URL(github_url)
+        const paths = pathname.split('/')
+        if (paths.length === 2) {
+            pathname = `/${await getTopOrgRepo(paths[1])}`
+            // return Promise.reject(`invalid pathname: ${github_url}`)
         }
         const result = await got(
             `https://api.github.com/repos${pathname}/stats/code_frequency`
@@ -184,44 +169,47 @@ const createProjectObject = ({
         Math.round((additions + deletions) / 4)
     )
 
-    const reducer = (acc, [_, additions, deletions]) =>
-        acc + (additions + deletions)
+    if (code_frequency) {
+        const reducer = (acc, [_, additions, deletions]) =>
+            acc + (additions + deletions)
 
-    // code frequencies three months
-    const code_frequency_three_months = code_frequency.filter(([timestamp]) =>
-        dayjs.unix(timestamp).isAfter(dayjs().subtract(3, 'month'))
-    )
-    dataObject.set(
-        'code_net_additions_per_week_three_months',
-        code_frequency_three_months.reduce(reducer, 0) /
-            code_frequency_three_months.length
-    )
+        // code frequencies three months
+        const code_frequency_three_months = code_frequency.filter(
+            ([timestamp]) =>
+                dayjs.unix(timestamp).isAfter(dayjs().subtract(3, 'month'))
+        )
+        dataObject.set(
+            'code_net_additions_per_week_three_months',
+            code_frequency_three_months.reduce(reducer, 0) /
+                code_frequency_three_months.length
+        )
 
-    // code frequencies six months
-    const code_frequency_six_months = code_frequency.filter(([timestamp]) =>
-        dayjs.unix(timestamp).isAfter(dayjs().subtract(6, 'month'))
-    )
-    dataObject.set(
-        'code_net_additions_per_week_six_months',
-        code_frequency_six_months.reduce(reducer, 0) /
-            code_frequency_six_months.length
-    )
+        // code frequencies six months
+        const code_frequency_six_months = code_frequency.filter(([timestamp]) =>
+            dayjs.unix(timestamp).isAfter(dayjs().subtract(6, 'month'))
+        )
+        dataObject.set(
+            'code_net_additions_per_week_six_months',
+            code_frequency_six_months.reduce(reducer, 0) /
+                code_frequency_six_months.length
+        )
 
-    // code frequencies one year
-    const code_frequency_one_year = code_frequency.filter(([timestamp]) =>
-        dayjs.unix(timestamp).isAfter(dayjs().subtract(1, 'year'))
-    )
-    dataObject.set(
-        'code_net_additions_per_week_one_year',
-        code_frequency_one_year.reduce(reducer, 0) /
-            code_frequency_one_year.length
-    )
+        // code frequencies one year
+        const code_frequency_one_year = code_frequency.filter(([timestamp]) =>
+            dayjs.unix(timestamp).isAfter(dayjs().subtract(1, 'year'))
+        )
+        dataObject.set(
+            'code_net_additions_per_week_one_year',
+            code_frequency_one_year.reduce(reducer, 0) /
+                code_frequency_one_year.length
+        )
 
-    // code frequencies all
-    dataObject.set(
-        'code_net_additions_per_week_all',
-        code_frequency.reduce(reducer, 0) / code_frequency.length
-    )
+        // code frequencies all
+        dataObject.set(
+            'code_net_additions_per_week_all',
+            code_frequency.reduce(reducer, 0) / code_frequency.length
+        )
+    }
 
     return dataObject
 }
