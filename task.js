@@ -90,7 +90,7 @@ const getRepoCodeFrequency = async (github_url) => {
         ).json()
         return Promise.resolve(result)
     } catch (error) {
-        return Promise.reject(error)
+        console.error(error)
     }
 }
 
