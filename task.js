@@ -1,5 +1,13 @@
+require('dotenv').config()
 const got = require('got')
 const { sleep } = require('./util')
+
+const {
+    LEANCLOUD_APP_ID,
+    LEANCLOUD_APP_SECRET,
+    LEANCLOUD_SERVER_URL,
+    GITHUB_PERSONAL_TOKEN,
+} = process.env
 
 const getAllProjectIDs = async () => {
     try {
@@ -83,8 +91,7 @@ const getRepoCodeFrequency = async (github_url) => {
             `https://api.github.com/repos${pathname}/stats/code_frequency`,
             {
                 headers: {
-                    Authorization:
-                        'token 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',
+                    Authorization: `token ${GITHUB_PERSONAL_TOKEN}`,
                 },
             }
         ).json()
@@ -121,9 +128,9 @@ const AV = require('leancloud-storage')
 const flatten = require('flat')
 
 AV.init({
-    appId: 'YFVy0m3NHd2Ovv2ffwDOg2JX-gzGzoHsz',
-    appKey: 'WzWbVb8nS5dbWqA3jVtSDJmN',
-    serverURL: 'https://yfvy0m3n.lc-cn-n1-shared.com',
+    appId: LEANCLOUD_APP_ID,
+    appKey: LEANCLOUD_APP_SECRET,
+    serverURL: LEANCLOUD_SERVER_URL,
 })
 
 const saveAllObjects = async (objects) => {

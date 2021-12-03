@@ -5,6 +5,7 @@
     },
     "dependencies": {
         "dayjs": "^1.10.7",
+        "dotenv": "^10.0.0",
         "flat": "^5.0.2",
         "got": "^11.8.2",
         "leancloud-storage": "^4.12.0",
