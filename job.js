@@ -19,20 +19,16 @@ const collectProject = async () => {
         for (const id of ids) {
             try {
                 console.log(`${id}...`)
-                const detail = await getProjectDetail(id)
-                const {
-                    links: {
-                        repos_url: { github },
-                    },
-                } = detail
+                let detail = await getProjectDetail(id)
+
+                // repo code frequency
+                const github = detail.links.repos_url.github
                 if (github && github.length > 0) {
                     const code_frequency = await getRepoCodeFrequency(github[0])
-                    projectObjects.push(
-                        createProjectObject({ ...detail, code_frequency })
-                    )
-                } else {
-                    projectObjects.push(createProjectObject(detail))
+                    detail = { ...detail, code_frequency }
                 }
+
+                projectObjects.push(createProjectObject(detail))
 
                 await sleep(1)
             } catch (error) {

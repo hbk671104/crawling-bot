@@ -84,7 +84,7 @@ const getRepoCodeFrequency = async (github_url) => {
             {
                 headers: {
                     Authorization:
-                        'token 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',
+                        'token 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',
                 },
             }
         ).json()
