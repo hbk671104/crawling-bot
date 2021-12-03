@@ -183,7 +183,7 @@ const createProjectObject = ({
         Math.round((additions + deletions) / 4)
     )
 
-    if (code_frequency) {
+    if (code_frequency && code_frequency.length > 0) {
         const reducer = (acc, [_, additions, deletions]) =>
             acc + (additions + deletions)
 
@@ -231,6 +231,7 @@ const createProjectObject = ({
                 code_frequency.reduce(reducer, 0) / code_frequency.length
             )
         )
+        dataObject.set('repo_length_of_time_in_week', code_frequency.length)
     }
 
     return dataObject
