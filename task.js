@@ -186,11 +186,12 @@ const createProjectObject = ({
     if (code_frequency && code_frequency.length > 0) {
         const reducer = (acc, [_, additions, deletions]) =>
             acc + (additions + deletions)
+        const now = dayjs()
 
         // code frequencies three months
         const code_frequency_three_months = code_frequency.filter(
             ([timestamp]) =>
-                dayjs.unix(timestamp).isAfter(dayjs().subtract(3, 'month'))
+                dayjs.unix(timestamp).isAfter(now.subtract(3, 'month'))
         )
         dataObject.set(
             'code_net_additions_per_week_three_months',
@@ -202,7 +203,7 @@ const createProjectObject = ({
 
         // code frequencies six months
         const code_frequency_six_months = code_frequency.filter(([timestamp]) =>
-            dayjs.unix(timestamp).isAfter(dayjs().subtract(6, 'month'))
+            dayjs.unix(timestamp).isAfter(now.subtract(6, 'month'))
         )
         dataObject.set(
             'code_net_additions_per_week_six_months',
@@ -214,7 +215,7 @@ const createProjectObject = ({
 
         // code frequencies one year
         const code_frequency_one_year = code_frequency.filter(([timestamp]) =>
-            dayjs.unix(timestamp).isAfter(dayjs().subtract(1, 'year'))
+            dayjs.unix(timestamp).isAfter(now.subtract(1, 'year'))
         )
         dataObject.set(
             'code_net_additions_per_week_one_year',
@@ -224,13 +225,19 @@ const createProjectObject = ({
             )
         )
 
-        // code frequencies all
+        // code frequencies two years
+        const code_frequency_two_year = code_frequency.filter(([timestamp]) =>
+            dayjs.unix(timestamp).isAfter(now.subtract(2, 'year'))
+        )
         dataObject.set(
-            'code_net_additions_per_week_all',
+            'code_net_additions_per_week_two_years',
             Math.round(
-                code_frequency.reduce(reducer, 0) / code_frequency.length
+                code_frequency_two_year.reduce(reducer, 0) /
+                    code_frequency_two_year.length
             )
         )
+
+        dataObject.set('total_lines_of_code', code_frequency.reduce(reducer, 0))
         dataObject.set('repo_length_of_time_in_week', code_frequency.length)
     }
 
