@@ -69,9 +69,9 @@
   integrity sha512-9NET910DNaIPngYnLLPeg+Ogzqsi9uM4mSboU5y6p8S5DzMTVEsJZrawi+BoDNUVBa2DhJqQYUFvMDfgU062LQ==
 
 "@sindresorhus/is@^4.0.0":
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-4.2.0.tgz#667bfc6186ae7c9e0b45a08960c551437176e1ca"
-  integrity sha512-VkE3KLBmJwcCaVARtQpfuKcKv8gcBmUubrfHGF84dXuuW6jgsRYxPtzcIhPyK9WAPpRt2/xY6zkD9MnRaJzSyw==
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-4.6.0.tgz#3c7c9c46e678feefe7a2e5bb609d3dbd665ffb3f"
+  integrity sha512-t09vSN3MdfsyCHoFcTRCH/iUtG7OJ0CsjzB8cjAmKc/va/kIgeDI/TxsigdncE/4be734m0cvIYwNaV4i2XqAw==
 
 "@szmarczak/http-timer@^1.1.2":
   version "1.1.2"
@@ -273,7 +273,7 @@ cacheable-request@^6.0.0:
     normalize-url "^4.1.0"
     responselike "^1.0.2"
 
-cacheable-request@^7.0.1:
+cacheable-request@^7.0.2:
   version "7.0.2"
   resolved "https://registry.yarnpkg.com/cacheable-request/-/cacheable-request-7.0.2.tgz#ea0d0b889364a25854757301ca12b2da77f91d27"
   integrity sha512-pouW8/FmiPQbuGpkXQ9BAPv/Mo5xDGANgSNXzTzJ8DrKGuXOssM4wIQRjfanNRh3Yu5cfYPvcorqbhg2KIJtew==
@@ -658,16 +658,16 @@ global-dirs@^3.0.0:
     ini "2.0.0"
 
 got@^11.8.2:
-  version "11.8.2"
-  resolved "https://registry.yarnpkg.com/got/-/got-11.8.2.tgz#7abb3959ea28c31f3576f1576c1effce23f33599"
-  integrity sha512-D0QywKgIe30ODs+fm8wMZiAcZjypcCodPNuMz5H9Mny7RJ+IjJ10BdmGW7OM7fHXP+O7r6ZwapQ/YQmMSvB0UQ==
+  version "11.8.3"
+  resolved "https://registry.yarnpkg.com/got/-/got-11.8.3.tgz#f496c8fdda5d729a90b4905d2b07dbd148170770"
+  integrity sha512-7gtQ5KiPh1RtGS9/Jbv1ofDpBFuq42gyfEib+ejaRBJuj/3tQFeR5+gw57e4ipaU8c/rCjvX6fkQz2lyDlGAOg==
   dependencies:
     "@sindresorhus/is" "^4.0.0"
     "@szmarczak/http-timer" "^4.0.5"
     "@types/cacheable-request" "^6.0.1"
     "@types/responselike" "^1.0.0"
     cacheable-lookup "^5.0.3"
-    cacheable-request "^7.0.1"
+    cacheable-request "^7.0.2"
     decompress-response "^6.0.0"
     http2-wrapper "^1.0.0-beta.5.2"
     lowercase-keys "^2.0.0"
@@ -927,10 +927,10 @@ leancloud-realtime@^5.0.0-rc.4:
     protobufjs "^5.0.1"
     uuid "^3.0.0"
 
-leancloud-storage@^4.12.0:
-  version "4.12.0"
-  resolved "https://registry.yarnpkg.com/leancloud-storage/-/leancloud-storage-4.12.0.tgz#10d1ec68f0d48b2191448d2e775fb798cd8a690a"
-  integrity sha512-lm/4BVhCzKdG0YfgCV8BGIg9OpwYMLHAPNtfTkJU0Kd/OsE6vCsdU+HXdfrqcGBU4XmVKqjin0LYn25k3avZdQ==
+leancloud-storage@^4.12.2:
+  version "4.12.2"
+  resolved "https://registry.yarnpkg.com/leancloud-storage/-/leancloud-storage-4.12.2.tgz#fff61413b248dd75b096881437119719099503f2"
+  integrity sha512-GsyzkNufQoZ5f75vt3tgwhkhfxQ2ZR88Kq3Kt6HoWtsY13+L0Y6IBmGcLsNvN4NSKB2Qd01GNk2m9b9KFELHlA==
   dependencies:
     "@leancloud/adapter-types" "^5.0.0"
     "@leancloud/platform-adapters-browser" "^1.5.2"

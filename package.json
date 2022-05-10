@@ -1,4 +1,9 @@
 {
+    "name": "crawling-bot",
+    "version": "1.0.0",
+    "description": "crypto crawler",
+    "author": "hbk671104 <hbk671104@gmail.com>",
+    "main": "app.js",
     "scripts": {
         "start": "node app.js",
         "test": "nodemon test.js"
@@ -8,7 +13,7 @@
         "dotenv": "^10.0.0",
         "flat": "^5.0.2",
         "got": "^11.8.2",
-        "leancloud-storage": "^4.12.0",
+        "leancloud-storage": "^4.12.2",
         "node-cron": "^3.0.0",
         "yargs": "^17.2.1"
     },
