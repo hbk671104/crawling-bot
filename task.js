@@ -113,17 +113,6 @@ const getTrendingToday = async () => {
     }
 }
 
-const getPublicTreasury = async (id) => {
-    try {
-        const result = await got(
-            `https://api.coingecko.com/api/v3/companies/public_treasury/${id}`
-        ).json()
-        return Promise.resolve(result)
-    } catch (error) {
-        return Promise.reject(error)
-    }
-}
-
 const AV = require('leancloud-storage')
 const flatten = require('flat')
 
@@ -264,23 +253,13 @@ const createTrendingDataObject = ({ id, name, symbol, market_cap_rank }) => {
     return dataObject
 }
 
-const createPublicTreasuryDataObject = async ({ id, data }) => {
-    const dataObject = new AV.Object('Public_Treasury')
-    dataObject.set('project_id', id)
-    dataObject.set(data)
-
-    return dataObject
-}
-
 module.exports = {
     getTopProjectIDs,
     getProjectDetail,
     getRepoCodeFrequency,
     getTrendingToday,
-    getPublicTreasury,
     createProjectObject,
     createDevDataObject,
     createTrendingDataObject,
-    createPublicTreasuryDataObject,
     saveAllObjects,
 }

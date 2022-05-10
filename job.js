@@ -3,10 +3,8 @@ const {
     getProjectDetail,
     getRepoCodeFrequency,
     getTrendingToday,
-    getPublicTreasury,
     createProjectObject,
     createTrendingDataObject,
-    createPublicTreasuryDataObject,
     saveAllObjects,
 } = require('./task')
 const { sleep } = require('./util')
@@ -55,25 +53,7 @@ const collectTrending = async () => {
     }
 }
 
-const collectPublicTreasury = async () => {
-    try {
-        console.log('getting public treasury...')
-        await createPublicTreasuryDataObject({
-            id: 'bitcoin',
-            data: await getPublicTreasury('bitcoin'),
-        }).save()
-        await createPublicTreasuryDataObject({
-            id: 'ethereum',
-            data: await getPublicTreasury('ethereum'),
-        }).save()
-        console.log('getting public treasury done.')
-    } catch (error) {
-        console.error(error)
-    }
-}
-
 module.exports = {
     collectProject,
     collectTrending,
-    collectPublicTreasury,
 }
