@@ -1,8 +1,8 @@
 {
     "name": "crawling-bot",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "description": "crypto crawler",
-    "author": "hbk671104 <hbk671104@gmail.com>",
+    "author": "Bokang Huang <hbk671104@gmail.com>",
     "main": "app.js",
     "scripts": {
         "start": "node app.js",
